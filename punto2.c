@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define largoDescripcion 100
+
 //declaracion de estructuras a usar
 typedef struct Tarea{
     int TareaID; 
@@ -19,14 +20,17 @@ void cargarTodasTarea(Tarea **,int);
 void mostrar(Tarea *);
 void mostrarTodo(Tarea **,int);
 void tareasHechas(Tarea **, Tarea **,int);
-
+Tarea * BuscarTareafunc(Tarea**, int,int);
+Tarea * BuscarTarea(Tarea**, int);
+//menu principal
 int main(){
     int cantidad = cantidadTareas();
     Tarea **pendientes,**realizadas;
 
     pendientes = espaciotareas(cantidad);
     realizadas = espaciotareas(cantidad);
-    cargarTodasTarea(pendientes,cantidad);
+    cargarTodasTarea(pendientes,cantidad); 
+    Tarea *tareaSolicitada = BuscarTarea(pendientes,cantidad);
     tareasHechas(pendientes,realizadas,cantidad);
     printf("las tareas realizadas son:\n");
     mostrarTodo(realizadas,cantidad);
@@ -69,7 +73,6 @@ void cargarTodasTarea(Tarea **todos,int cantid){
     {
         todos[i] = cargarTarea(i+1);
     }
-    
 }
 
 void mostrar(Tarea *tareaUnica){
@@ -101,7 +104,25 @@ void tareasHechas(Tarea **pendiente, Tarea **hecha,int cantidad){
             hecha[i] = pendiente[i];
             pendiente[i] = NULL;
         }
-        
     }
-    
 }
+
+Tarea * BuscarTareafunc(Tarea** tareas, int cantidad,int numeroBuscar){
+    Tarea *devolver = NULL;
+    for (int i = 0; i < cantidad; i++)
+    {
+        if (tareas[i]->TareaID==numeroBuscar)
+        {
+            devolver = tareas[i];
+        }
+    }
+    return devolver;
+}
+Tarea * BuscarTarea(Tarea** tareas, int cantidad){
+    int numero;
+    printf("ingrese el numero de id de la tarea:\n");
+    scanf("%d",&numero);
+    Tarea *tar = BuscarTareafunc(tareas,cantidad,numero);
+    return tar;
+}
+
