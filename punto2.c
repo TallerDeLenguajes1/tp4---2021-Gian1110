@@ -19,19 +19,28 @@ void cargarTodasTarea(Tarea **,int);
 void mostrar(Tarea *);
 void mostrarTodo(Tarea **,int);
 void tareasHechas(Tarea **, Tarea **,int);
+Tarea * BuscarTarea(Tarea **, int,char *);
 
 int main(){
-    int cantidad = cantidadTareas();
+    int cantidad;
     Tarea **pendientes,**realizadas;
-
+    char palabraBuscar[largoDescripcion];
+    
+     cantidad = cantidadTareas();
     pendientes = espaciotareas(cantidad);
     realizadas = espaciotareas(cantidad);
     cargarTodasTarea(pendientes,cantidad);
+    //pedir la palabra a buscar 
+    printf("ingresar la palabra a buscar:\n");
+    fgets(palabraBuscar,largoDescripcion,stdin);
+    Tarea * tar = BuscarTarea(pendientes,cantidad,palabraBuscar);
+    mostrar(tar);
+    //tareas a realizar 
     tareasHechas(pendientes,realizadas,cantidad);
     printf("las tareas realizadas son:\n");
     mostrarTodo(realizadas,cantidad);
     printf("las tareas pendientes son:\n");
-    mostrarTodo(pendientes,cantidad);
+    mostrarTodo(pendientes,cantidad);   
     return 0;
 }
 
@@ -40,6 +49,7 @@ int cantidadTareas(){
     int cantidad;
     printf("ingresa la cantidad de tareas a cargar\n");
     scanf("%d",&cantidad);
+    getchar();
     return cantidad;
 }
 
@@ -57,10 +67,9 @@ Tarea* cargarTarea(int id){
     nueva->TareaID=id;
     nueva->Duracion = rand()%10 *10;
     printf("escriba la descripcion de la tarea por favor: ");
-    scanf("%s",&descrip);
+    fgets(descrip,largoDescripcion,stdin);
     nueva->Descripcion = (char *) malloc(sizeof(char) * strlen(descrip)); 
     strcpy(nueva->Descripcion,descrip); 
-    
     return nueva;
 }
 
@@ -69,11 +78,10 @@ void cargarTodasTarea(Tarea **todos,int cantid){
     {
         todos[i] = cargarTarea(i+1);
     }
-    
 }
 
 void mostrar(Tarea *tareaUnica){
-    if (tareaUnica != NULL)
+    if (tareaUnica)
     {
         printf("el ID de la tarea es: %d\n",tareaUnica->TareaID);
         printf("la duracion de la tareas es: %d\n",tareaUnica->Duracion);
@@ -85,7 +93,7 @@ void mostrar(Tarea *tareaUnica){
 void mostrarTodo(Tarea **todo,int cant){
 for (int i = 0; i < cant; i++)
     {
-        mostrar(todo[i]);
+        mostrar(todo[i]); 
     }
 }
 
@@ -102,6 +110,19 @@ void tareasHechas(Tarea **pendiente, Tarea **hecha,int cantidad){
             pendiente[i] = NULL;
         }
         
+    }  
+}
+
+Tarea * BuscarTarea(Tarea **tareas, int cantidad, char *palabra){
+    Tarea *devuelve= NULL;
+    for (int i = 0; i < cantidad; i++)
+    {
+        char *s = strstr(tareas[i]->Descripcion,palabra);
+        if (s)
+        {
+            devuelve= tareas[i];
+            i=i+cantidad;
+        }
     }
-    
+    return devuelve;
 }
