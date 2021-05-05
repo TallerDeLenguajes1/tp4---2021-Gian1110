@@ -19,23 +19,30 @@ void cargarTodasTarea(Tarea **,int);
 void mostrar(Tarea *);
 void mostrarTodo(Tarea **,int);
 void tareasHechas(Tarea **, Tarea **,int);
-Tarea * BuscarTarea(Tarea **, int,char *);
-
+<<<<<<< HEAD
+Tarea * BuscarTareaPorPalabra(Tarea **, int,char *);
+Tarea * BuscarTareafuncPorID(Tarea**, int,int);
+Tarea * BuscarTareaPorID(Tarea**, int);
+//menu principal
+>>>>>>> origin/BuscaTarea
 int main(){
     int cantidad;
     Tarea **pendientes,**realizadas;
     char palabraBuscar[largoDescripcion];
-    
-     cantidad = cantidadTareas();
+    cantidad = cantidadTareas();
     pendientes = espaciotareas(cantidad);
     realizadas = espaciotareas(cantidad);
+<<<<<<< HEAD
     cargarTodasTarea(pendientes,cantidad);
     //pedir la palabra a buscar 
     printf("ingresar la palabra a buscar:\n");
     fgets(palabraBuscar,largoDescripcion,stdin);
-    Tarea * tar = BuscarTarea(pendientes,cantidad,palabraBuscar);
+    Tarea * tar = BuscarTareaPorPalabra(pendientes,cantidad,palabraBuscar);
     mostrar(tar);
     //tareas a realizar 
+======= 
+    Tarea *tareaSolicitada = BuscarTareaPorID(pendientes,cantidad);
+>>>>>>> origin/BuscaTarea
     tareasHechas(pendientes,realizadas,cantidad);
     printf("las tareas realizadas son:\n");
     mostrarTodo(realizadas,cantidad);
@@ -67,7 +74,7 @@ Tarea* cargarTarea(int id){
     nueva->TareaID=id;
     nueva->Duracion = rand()%10 *10;
     printf("escriba la descripcion de la tarea por favor: ");
-    fgets(descrip,largoDescripcion,stdin);
+	fgets(descrip,largoDescripcion,stdin);
     nueva->Descripcion = (char *) malloc(sizeof(char) * strlen(descrip)); 
     strcpy(nueva->Descripcion,descrip); 
     return nueva;
@@ -109,11 +116,12 @@ void tareasHechas(Tarea **pendiente, Tarea **hecha,int cantidad){
             hecha[i] = pendiente[i];
             pendiente[i] = NULL;
         }
+<<<<<<< HEAD
         
     }  
 }
 
-Tarea * BuscarTarea(Tarea **tareas, int cantidad, char *palabra){
+Tarea * BuscarTareaPorPalabra(Tarea **tareas, int cantidad, char *palabra){
     Tarea *devuelve= NULL;
     for (int i = 0; i < cantidad; i++)
     {
@@ -126,3 +134,24 @@ Tarea * BuscarTarea(Tarea **tareas, int cantidad, char *palabra){
     }
     return devuelve;
 }
+
+Tarea * BuscarTareafuncPorID(Tarea** tareas, int cantidad,int numeroBuscar){
+    Tarea *devolver = NULL;
+    for (int i = 0; i < cantidad; i++)
+    {
+        if (tareas[i]->TareaID==numeroBuscar)
+        {
+            devolver = tareas[i];
+        }
+    }
+    return devolver;
+}
+Tarea * BuscarTareaPorID(Tarea** tareas, int cantidad){
+    int numero;
+    printf("ingrese el numero de id de la tarea:\n");
+    scanf("%d",&numero);
+    Tarea *tar = BuscarTareafuncPorID(tareas,cantidad,numero);
+    return tar;
+}
+
+>>>>>>> origin/BuscaTarea
